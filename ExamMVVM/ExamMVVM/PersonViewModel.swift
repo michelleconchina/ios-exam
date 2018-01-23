@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import EGOCache
 import Cache
 
 class PersonViewModel: NSObject {
@@ -17,23 +16,22 @@ class PersonViewModel: NSObject {
     func getPersonList(completion: @escaping () -> Void) {
         let urlString = "https://my-json-server.typicode.com/michelleconchina/demo/list"
         //Check available cache
-        self.cache.object("reponseJSONCache") { (jsonList:JSON?) in
-            if jsonList != nil {
-                print(" .....completion")
-                self.personList = PersonHelper().convertToPersonList(list: jsonList!.object)
-                completion()
-            } else {
-                print(" ....getRequest")
-                Service().request(urlString: urlString, withBlock: { (response, error) in
-                    if error == nil {
-                        self.personList = PersonHelper().convertToPersonList(list: response!)
-                        completion()
-                    } else {
-                        completion()
-                    }
-                })
-                
-            }
+        let response: JSON? = self.cache.object(forKey: "reponseJSONCache")
+        if response != nil {
+            print(" .....completion")
+            self.personList = PersonHelper().convertToPersonList(list: response!.object)
+            completion()
+        } else {
+            print(" ....getRequest")
+            Service().request(urlString: urlString, withBlock: { (response, error) in
+                if error == nil {
+                    self.personList = PersonHelper().convertToPersonList(list: response!)
+                    completion()
+                } else {
+                    completion()
+                }
+            })
+            
         }
     }
     

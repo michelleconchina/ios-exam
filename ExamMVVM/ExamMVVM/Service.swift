@@ -26,7 +26,11 @@ class Service: NSObject {
                 case .success(let JSONValue):
                     print("Success with JSON")
                     if let response = JSONValue as? [[String: AnyObject]] {
-                        self.cache.add("reponseJSONCache", object: JSON.array(response))
+                        do {
+                            try self.cache.addObject(JSON.array(response), forKey: "reponseJSONCache")
+                        } catch {
+                            print(error.localizedDescription)
+                        }
                         withBlock(response, nil)
                     }
                 case .failure(let error):
