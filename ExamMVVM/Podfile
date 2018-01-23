@@ -7,7 +7,7 @@ target 'ExamMVVM' do
   # Pods for ExamMVVM
   pod 'Alamofire'
   pod 'SwiftyJSON', :git => "https://github.com/acegreen/SwiftyJSON.git", :branch => "swift3"
-  pod 'Cache'
+  pod 'Cache', '~>3.3.0'
 
   target 'ExamMVVMTests' do
     inherit! :search_paths
